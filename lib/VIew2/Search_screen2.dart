@@ -1,13 +1,15 @@
+import 'package:chat_app/controller/serachController.dart';
 import 'package:chat_app/service/const.dart';
 import 'package:chat_app/view/ChatRoom.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ss extends SearchDelegate {
   final List userList;
 
   ss(this.userList);
-  Map<String, dynamic>? userMap;
+  // Map<String, dynamic>? userMap;
+  SearchController searchController = Get.put(SearchController());
 
   String chatRoomId(String? user1, String? user2) {
     if (user1![0].toLowerCase().codeUnits[0] >
@@ -18,17 +20,17 @@ class ss extends SearchDelegate {
     }
   }
 
-  Future getUsername(String? username) async {
-    return await FirebaseFirestore.instance
-        .collection("users")
-        .where("username", isEqualTo: username)
-        .get()
-        .then(
-      (value) {
-        userMap = value.docs[0].data();
-      },
-    );
-  }
+  // Future getUsername(String? username) async {
+  //   return await FirebaseFirestore.instance
+  //       .collection("users")
+  //       .where("username", isEqualTo: username)
+  //       .get()
+  //       .then(
+  //     (value) {
+  //       userMap = value.docs[0].data();
+  //     },
+  //   );
+  // }
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -75,19 +77,21 @@ class ss extends SearchDelegate {
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
           onTap: () {
-            // print("==============>>>>>>>>>>>>>>>>>>${userMap!.keys}");
-            getUsername(suggestion[index]['username']);
-            var result = chatRoomId(
-                kFirebaseAuth.currentUser!.displayName, userMap!['username']);
+            print(
+                "==============>>>>>>>>>>>>>>>>>>${searchController.userMap.values}");
+            query = suggestion[index]['username'];
+
+            searchController.getUsername(suggestion[index]['username']);
+            var result = chatRoomId(kFirebaseAuth.currentUser!.displayName,
+                searchController.userMap['username']);
             // showResults(context);
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    ChatRoom(chatRoomId: result, userMap: userMap),
+                builder: (context) => ChatRoom(
+                    chatRoomId: result, userMap: searchController.userMap),
               ),
             );
-            query = suggestion[index]['username'];
           },
           title: Text(
             "${suggestion[index]['username']}",

@@ -52,6 +52,9 @@ dependencies:
   video_player:
   audioplayers: ^0.20.1
   flutter_cached_pdfview: ^0.4.1
+  firebase_messaging: ^11.4.1
+  flutter_local_notifications: ^9.6.0
+
 
 
 

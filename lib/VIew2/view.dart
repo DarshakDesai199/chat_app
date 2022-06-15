@@ -1,3 +1,4 @@
+import 'package:chat_app/service/const.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -35,8 +36,11 @@ class _SearchState extends State<Search> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
+            print("${kFirebaseAuth.currentUser!.displayName}");
             print("userData ==> ${usersData.toString()}");
-            showSearch(context: context, delegate: ss(usersData!));
+            setState(() {
+              showSearch(context: context, delegate: ss(usersData!));
+            });
           },
           child: Icon(Icons.search),
         ),
