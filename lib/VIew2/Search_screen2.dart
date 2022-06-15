@@ -18,8 +18,12 @@ class ss extends SearchDelegate {
     }
   }
 
-  Future getUsername() async {
-    return await FirebaseFirestore.instance.collection("users").get().then(
+  Future getUsername(String? username) async {
+    return await FirebaseFirestore.instance
+        .collection("users")
+        .where("username", isEqualTo: username)
+        .get()
+        .then(
       (value) {
         userMap = value.docs[0].data();
       },
@@ -48,15 +52,16 @@ class ss extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    getUsername();
-    var result = chatRoomId(
-        kFirebaseAuth.currentUser!.displayName, userMap!['username']);
-    return ChatRoom(
-      userMap: userMap,
-      chatRoomId: result,
-    );
+    return Container();
+    // var result = chatRoomId(
+    //     kFirebaseAuth.currentUser!.displayName, userMap!['username']);
+    // return ChatRoom(
+    //   userMap: userMap,
+    //   chatRoomId: result,
+    // );
   }
 
+  // SearchController searchController = Get.put(SearchController());
   @override
   Widget buildSuggestions(BuildContext context) {
     final suggestion = query.isEmpty
@@ -70,7 +75,18 @@ class ss extends SearchDelegate {
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
           onTap: () {
-            showResults(context);
+            // print("==============>>>>>>>>>>>>>>>>>>${userMap!.keys}");
+            getUsername(suggestion[index]['username']);
+            var result = chatRoomId(
+                kFirebaseAuth.currentUser!.displayName, userMap!['username']);
+            // showResults(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ChatRoom(chatRoomId: result, userMap: userMap),
+              ),
+            );
             query = suggestion[index]['username'];
           },
           title: Text(

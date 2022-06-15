@@ -4,6 +4,7 @@ import 'package:chat_app/service/google_service.dart';
 import 'package:chat_app/view/Search_Screen.dart';
 import 'package:chat_app/view/settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -57,14 +58,27 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void getUserImg() async {
+    final user = await FirebaseFirestore.instance
+        .collection("users")
+        .doc('${FirebaseAuth.instance.currentUser!.uid}')
+        .get();
+    Map<String, dynamic>? getUserData = user.data() as Map<String, dynamic>?;
+    setState(() {
+      img = getUserData!['userImage'];
+    });
+  }
+
   @override
   void initState() {
+    getUserImg();
     getUsername();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("Image === > $img");
     return Scaffold(
       body: Column(
         children: [

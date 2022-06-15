@@ -171,6 +171,7 @@ class _Search_ScreenState extends State<Search_Screen> {
                                   shape: BoxShape.circle),
                               child: IconButton(
                                 onPressed: () {
+                                  print("${userMap!.values}");
                                   getUsername(search.text);
                                 },
                                 icon: Icon(Icons.search,

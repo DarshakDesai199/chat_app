@@ -1,9 +1,8 @@
+import 'package:chat_app/view/Splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:sizer/sizer.dart';
-
-import 'VIew2/view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(color: comColor),
             primarySwatch: Colors.blue,
           ),
-          home: Search(),
+          home: Splash(),
         );
       },
     );

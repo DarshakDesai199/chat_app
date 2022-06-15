@@ -61,6 +61,7 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
   }
 
+  /// message
   void sendMessage() async {
     if (_message.text.isNotEmpty) {
       Map<String, dynamic> message = {

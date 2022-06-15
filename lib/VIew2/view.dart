@@ -12,9 +12,9 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   List? usersData;
-  // Map<String, dynamic>? userMap;
+  Map<String, dynamic>? userMap;
 
-  Future getUsername() async {
+  Future getUserData() async {
     await FirebaseFirestore.instance.collection("users").get().then((value) {
       setState(() {
         usersData = value.docs;
@@ -25,7 +25,7 @@ class _SearchState extends State<Search> {
 
   @override
   void initState() {
-    getUsername();
+    getUserData();
     super.initState();
   }
 
@@ -35,7 +35,7 @@ class _SearchState extends State<Search> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            print("userMap == .${usersData.toString()}");
+            print("userData ==> ${usersData.toString()}");
             showSearch(context: context, delegate: ss(usersData!));
           },
           child: Icon(Icons.search),
